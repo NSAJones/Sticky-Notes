@@ -1,3 +1,5 @@
 06-049-1 Django - Sticky Notes Application Part 1.pdf
 02-029 Django Project Setup .pdf
 venv
+*__pycache__
+*migrations

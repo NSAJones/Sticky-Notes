@@ -1,0 +1,26 @@
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+        content="width=device-width,initial-scale=1.0">
+
+        <title>
+            {% block title %}Sticky notes{% endblock %}
+        </title>
+
+        <link rel="stylesheet" href="{% static 'base.css' %}" >
+
+        {% block imports %}{% endblock %}
+    </head>
+    <body>
+        <header> 
+            <h1>{% block header %} This is a header :3c {% endblock %}</h1>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <footer> this is a footer </footer>
+    </body>
+</html>
