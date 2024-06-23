@@ -57,3 +57,18 @@ def register(request):
         
     context = {"form":form}
     return render(request, "register.html",context)
+
+def index(request):
+    context = {"logged_in":authenticate(request)}
+    return render(request,"index.html")
+
+def authenticate(request):
+    """Checks session_id against database"""
+    session_id = request.COOKIES.get("session_id")
+    response = login_table.objects.filter(session_id=session_id).exists()
+    return response
+
+def get_user(request):
+    session_id = request.COOKIES.get("session_id")
+    response = login_table.objects.get(session_id=session_id)
+    return response

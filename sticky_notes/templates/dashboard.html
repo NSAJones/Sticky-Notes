@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action='' method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="create Board" name="create">
+    </form>
+
+    <h2>Owned boards</h2>
+    <div id="owned">
+        {% for board in owned %}
+            <a id='{{board.id}}' href='{% url "board" board_id=board.id %}'>
+                {{ board.name }}
+            </a>
+            <form action='' method="post">
+                {% csrf_token %}
+                <input type="submit" 
+                value="delete board" name="delete_{{board.id}}">
+            </form>
+        {% endfor %}
+    </div>
+
+    <h2>Invited boards</h2>
+    <div id="invited">
+        {% for board in invited %}
+            <a id='{{board.id}}' href='{% url "board"  board_id=board.id %}'>
+                {{ board.name }}
+            </a>
+        {% endfor %}
+    </div>
+
+{% endblock  %}

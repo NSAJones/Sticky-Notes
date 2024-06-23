@@ -6,10 +6,16 @@ from .models import Login as login_table
 
 class CreateUser(forms.Form):
     """Form for creating users"""
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
-    conf_password = forms.CharField(widget=forms.PasswordInput(),
-                                    label="confirm password")
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={"placeholder":"username"}
+    ))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={"placeholder":"password"}
+    ))
+    conf_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={"placeholder":"confirm password"}
+    ),
+    label="confirm password")
     
     def clean(self) -> dict[str, Any]:
         """Check form is valid"""
