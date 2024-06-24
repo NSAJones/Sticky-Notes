@@ -6,7 +6,7 @@ from login.models import Login
 
 
 class CreateBoard(forms.Form):
-    """form for creating boards"""
+    """Form for creating boards with a certain name"""
     name = forms.CharField(widget=forms.TextInput(
         attrs={"placeholder":"new board name",
                "required":"required"
@@ -14,6 +14,7 @@ class CreateBoard(forms.Form):
     ))
 
 class InviteUser(forms.Form):
+    """Form for giving Invites to other users"""
     username = forms.CharField(widget=forms.TextInput(
         attrs={"placeholder":"username",
                "required":"required"
@@ -25,6 +26,8 @@ class InviteUser(forms.Form):
         super(InviteUser,self).__init__(*args,**kwargs)
 
     def clean(self) -> dict[str, Any]:
+        """Checks the user isn't already invited and
+        Also if the username even exists"""
 
         cd = self.cleaned_data
 

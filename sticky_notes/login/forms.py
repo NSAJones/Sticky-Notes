@@ -6,6 +6,7 @@ from .models import Login as login_table
 
 class CreateUser(forms.Form):
     """Form for creating users"""
+    
     username = forms.CharField(widget=forms.TextInput(
         attrs={"placeholder":"username"}
     ))
@@ -18,7 +19,8 @@ class CreateUser(forms.Form):
     label="confirm password")
     
     def clean(self) -> dict[str, Any]:
-        """Check form is valid"""
+        """Checks both passwords are the same, also checks 
+        if username is already taken"""
 
         cd = self.cleaned_data
         usr = cd.get("username")
@@ -50,7 +52,7 @@ class Login(forms.Form):
     ))
 
     def clean(self) -> dict[str, Any]:
-        """Check form is valid"""
+        """Checks the username and password are correct"""
 
         cd = self.cleaned_data
         usr = cd.get("username")

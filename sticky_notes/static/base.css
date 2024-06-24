@@ -26,6 +26,10 @@ body *{
     font-weight: 400;
     font-style: normal;
 
+    
+}
+
+*{
     transition: all 0.5s ease-in-out;
 }
 
@@ -217,3 +221,26 @@ textarea:focus{
     background-color: transparent;
 }
 
+/* pulled from w3 schools */
+
+/* width */
+::-webkit-scrollbar {
+    width: 0.6em;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: var(--dark1);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--mid);
+    border-radius: var(--border-radius);
+    transition: all 0.5s ease-in-out;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--light2);
+  }

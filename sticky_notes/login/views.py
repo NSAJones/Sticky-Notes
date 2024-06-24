@@ -4,7 +4,10 @@ from .models import Login as login_table
 import uuid
 
 def login(request):
-    
+    """Login page, POST requests check for a login form and
+    its validity, then gives the user a session_id cookie
+    if their login is valid"""
+
     if request.method == "POST":
         form = Login(request.POST)
 
@@ -34,6 +37,10 @@ def login(request):
     return render(request, "login.html",context)
 
 def register(request):
+    """Page that allows user to register, POST requests
+    check for a form and it's validity and then creates
+    a user based on that data"""
+
     if request.method == "POST":
         form = CreateUser(request.POST)
 
@@ -61,13 +68,13 @@ def register(request):
     return render(request, "register.html",context)
 
 def index(request):
+    """Small landing page with nothing important"""
     context = {"logged_in":authenticate(request)}
-
    
     return render(request,"index.html",context)
 
-def authenticate(request):
-    """Checks session_id against database"""
+def authenticate(request) -> bool:
+    """Checks session_id against database from view request"""
     session_id = request.COOKIES.get("session_id")
     if session_id is None:
         return False
@@ -75,7 +82,8 @@ def authenticate(request):
     print(response)
     return response
 
-def get_user(request):
+def get_user(request) -> Login:
+    """Gets login object for use from view request"""
     session_id = request.COOKIES.get("session_id")
     response = login_table.objects.get(session_id=session_id)
     return response

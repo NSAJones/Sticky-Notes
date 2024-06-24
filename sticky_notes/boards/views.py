@@ -88,7 +88,8 @@ def dashboard(request):
 
 def board(request,board_id):
     """Page that shows sticky notes and allows users to edit 
-    them. Has the following POST scenarios:
+    them. Requires the user to be logged in. Has the 
+    following POST scenarios:
 
     ajax
         When the save button is pressed, an ajax function is
@@ -147,10 +148,17 @@ def board(request,board_id):
     return render(request,"board.html",context)
 
 
-        
-
 
 def invite(request,board_id):
+    """Page available only to the owner of the board, allows
+    an invite to be sent to another user, as well as remove
+    existing invites. Has the following POST scenarios:
+
+    invite
+        Checks the user is valid and if so creates an invite
+    delete
+        Deletes a specific user, an invite id is attached
+    """
     if not authenticate(request):
         return redirect("login")
     
