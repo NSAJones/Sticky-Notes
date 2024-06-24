@@ -1,9 +1,10 @@
-from django.shortcuts import render,HttpResponse,redirect
-from login.views import authenticate,get_user
+from django.shortcuts import render, HttpResponse, redirect
+from login.views import authenticate, get_user
 from login.models import Login
-from .models import Board,StickyNote,Invite
-from .forms import CreateBoard,InviteUser
+from .models import Board, StickyNote, Invite
+from .forms import CreateBoard, InviteUser
 import json
+
 
 def dashboard(request):
     """Page that shows data to the user about their profile,
@@ -24,9 +25,9 @@ def dashboard(request):
 
     if not authenticate(request):
         return redirect("login")
-    
+
     user = get_user(request)
-    
+
     if request.method == "POST":
         # Create board
         if request.POST.get("create"):
@@ -35,7 +36,7 @@ def dashboard(request):
                 name = form.cleaned_data.get("name")
 
                 # Create new board
-                b = Board(name=name,owner=user)
+                b = Board(name=name, owner=user)
                 b.save()
 
                 print(form.cleaned_data)
@@ -53,20 +54,16 @@ def dashboard(request):
             response = redirect("login")
             response.delete_cookie("session_id")
             return response
-        
+
         # Log user out
         elif request.POST.get("log_out"):
             # Make session_id blank in models
-            Login.objects.filter(
-                username=user.username).update(session_id=None)
-            
+            Login.objects.filter(username=user.username).update(session_id=None)
+
             # Delete session_id cookie
             response = redirect("login")
             response.delete_cookie("session_id")
             return response
-
-            
-
 
     owned = []
     invited = []
@@ -74,21 +71,21 @@ def dashboard(request):
     # Get boards user owns
     if Board.objects.filter(owner=user).exists():
         owned = Board.objects.filter(owner=user)
-    
+
     # Get boards user is invited to
     if Invite.objects.filter(username=user).exists():
         invited = Invite.objects.filter(username=user)
-    
+
     form = CreateBoard()
 
-    context={"form":form,"owned":owned,"invited":invited,"user":user.username}
+    context = {"form": form, "owned": owned, "invited": invited, "user": user.username}
     context["logged_in"] = authenticate(request)
-    return render(request,"dashboard.html",context)
-    
+    return render(request, "dashboard.html", context)
 
-def board(request,board_id):
-    """Page that shows sticky notes and allows users to edit 
-    them. Requires the user to be logged in. Has the 
+
+def board(request, board_id):
+    """Page that shows sticky notes and allows users to edit
+    them. Requires the user to be logged in. Has the
     following POST scenarios:
 
     ajax
@@ -99,22 +96,22 @@ def board(request,board_id):
         Creates a new note when a submit button is pressed
     delete_note.x
         When an image button is pressed on a sticky note,
-        deletes that note, has an id attached 
-    
+        deletes that note, has an id attached
+
     """
 
     # Check authentication
     if not authenticate(request):
         return redirect("login")
-    
+
     # Check user is invited/owner
     user = get_user(request)
-    
-    is_owner = Board.objects.filter(owner=user,id=board_id).exists()
-    is_invited = Invite.objects.filter(board=board_id,username=user).exists()
+
+    is_owner = Board.objects.filter(owner=user, id=board_id).exists()
+    is_invited = Invite.objects.filter(board=board_id, username=user).exists()
     if not (is_owner or is_invited):
         return redirect("dashboard")
-    
+
     board_obj = Board.objects.get(id=board_id)
 
     context = {}
@@ -122,7 +119,7 @@ def board(request,board_id):
     # Check for POST
     if request.method == "POST":
         print(request.POST)
-        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
         # Save notes
         if is_ajax:
             note_list = json.load(request)["notes"]
@@ -131,7 +128,7 @@ def board(request,board_id):
 
         # Create new note
         elif request.POST.get("new_note"):
-            new_note = StickyNote(creator=user,board=board_obj,text="")
+            new_note = StickyNote(creator=user, board=board_obj, text="")
             new_note.save()
 
         # Delete existing note
@@ -139,17 +136,15 @@ def board(request,board_id):
             id = request.POST.get("id")
             StickyNote.objects.filter(id=id).delete()
 
-
     notes = StickyNote.objects.filter(board=board_id)
     context["notes"] = notes
     context["logged_in"] = authenticate(request)
     context["board_id"] = board_id
-    
-    return render(request,"board.html",context)
+
+    return render(request, "board.html", context)
 
 
-
-def invite(request,board_id):
+def invite(request, board_id):
     """Page available only to the owner of the board, allows
     an invite to be sent to another user, as well as remove
     existing invites. Has the following POST scenarios:
@@ -161,10 +156,10 @@ def invite(request,board_id):
     """
     if not authenticate(request):
         return redirect("login")
-    
+
     user = get_user(request)
     board_row = Board.objects.get(id=board_id)
-    is_owner = Board.objects.filter(owner=user,id=board_id).exists()
+    is_owner = Board.objects.filter(owner=user, id=board_id).exists()
 
     if not is_owner:
         return redirect("dashboard")
@@ -175,23 +170,21 @@ def invite(request,board_id):
     if request.method == "POST":
         # Create Invite
         if request.POST.get("invite"):
-            form = InviteUser(request.POST,board_id=board_id)
+            form = InviteUser(request.POST, board_id=board_id)
             if form.is_valid():
                 user_str = form.cleaned_data.get("username")
                 user_row = Login.objects.get(username=user_str)
-                Invite(username=user_row,board=board_row).save()
-        
+                Invite(username=user_row, board=board_row).save()
+
         # Delete Invite
         if request.POST.get("delete"):
             invite_id = request.POST.get("id")
             Invite.objects.get(id=invite_id).delete()
-
 
     invites = Invite.objects.filter(board=board_row)
     context["form"] = form
     context["invites"] = invites
     context["board_id"] = board_id
     context["logged_in"] = authenticate(request)
-    
-    return render(request,"invite.html",context)
 
+    return render(request, "invite.html", context)

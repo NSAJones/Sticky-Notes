@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect
-from .forms import CreateUser,Login
+from django.shortcuts import render, redirect
+from .forms import CreateUser, Login
 from .models import Login as login_table
 import uuid
+
 
 def login(request):
     """Login page, POST requests check for a login form and
@@ -25,16 +26,17 @@ def login(request):
 
             # Give sessionID to client as cookie
             response = redirect("dashboard")
-            response.set_cookie("session_id",session_id)
+            response.set_cookie("session_id", session_id)
 
             return response
-            
+
     else:
         form = Login()
-        
-    context = {"form":form}
+
+    context = {"form": form}
     context["logged_in"] = authenticate(request)
-    return render(request, "login.html",context)
+    return render(request, "login.html", context)
+
 
 def register(request):
     """Page that allows user to register, POST requests
@@ -52,26 +54,25 @@ def register(request):
             password = cd.get("password")
 
             # Create user in models
-            new_user = login_table(
-                username = username,
-                password = password
-            )
+            new_user = login_table(username=username, password=password)
             new_user.save()
 
             return redirect("login")
-        
+
     else:
         form = CreateUser()
-        
-    context = {"form":form}
+
+    context = {"form": form}
     context["logged_in"] = authenticate(request)
-    return render(request, "register.html",context)
+    return render(request, "register.html", context)
+
 
 def index(request):
     """Small landing page with nothing important"""
-    context = {"logged_in":authenticate(request)}
-   
-    return render(request,"index.html",context)
+    context = {"logged_in": authenticate(request)}
+
+    return render(request, "index.html", context)
+
 
 def authenticate(request) -> bool:
     """Checks session_id against database from view request"""
@@ -81,6 +82,7 @@ def authenticate(request) -> bool:
     response = login_table.objects.filter(session_id=session_id).exists()
     print(response)
     return response
+
 
 def get_user(request) -> Login:
     """Gets login object for use from view request"""
