@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,HttpResponseRedirect
+from django.shortcuts import render,redirect
 from .forms import CreateUser,Login
 from .models import Login as login_table
 import uuid
@@ -21,7 +21,7 @@ def login(request):
             login_data.save()
 
             # Give sessionID to client as cookie
-            response = HttpResponse("Login Successful")
+            response = redirect("dashboard")
             response.set_cookie("session_id",session_id)
 
             return response
@@ -51,7 +51,7 @@ def register(request):
             )
             new_user.save()
 
-            return HttpResponseRedirect("login")
+            return redirect("login")
         
     else:
         form = CreateUser()
@@ -69,7 +69,10 @@ def index(request):
 def authenticate(request):
     """Checks session_id against database"""
     session_id = request.COOKIES.get("session_id")
+    if session_id is None:
+        return False
     response = login_table.objects.filter(session_id=session_id).exists()
+    print(response)
     return response
 
 def get_user(request):

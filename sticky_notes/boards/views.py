@@ -5,8 +5,22 @@ from .models import Board,StickyNote,Invite
 from .forms import CreateBoard,InviteUser
 import json
 
-# Create your views here.
 def dashboard(request):
+    """Page that shows data to the user about their profile,
+    user has to be logged in. Allows POST requests from the
+    following submit buttons:
+
+    create
+        Used to create a board, uses a form for the name of
+        the new board to be created.
+    delete_board
+        Tied to a specific board, will delete the board by id
+    user_delete
+        Will delete the user and all of their boards (through
+        cascade)
+    log_out
+        Logs the user out by removing their session_id
+    """
 
     if not authenticate(request):
         return redirect("login")
@@ -14,7 +28,6 @@ def dashboard(request):
     user = get_user(request)
     
     if request.method == "POST":
-        print(request.POST.get("delete"))
         # Create board
         if request.POST.get("create"):
             form = CreateBoard(request.POST)
@@ -41,8 +54,18 @@ def dashboard(request):
             response.delete_cookie("session_id")
             return response
         
-        
+        # Log user out
+        elif request.POST.get("log_out"):
+            # Make session_id blank in models
+            Login.objects.filter(
+                username=user.username).update(session_id=None)
+            
+            # Delete session_id cookie
+            response = redirect("login")
+            response.delete_cookie("session_id")
+            return response
 
+            
 
 
     owned = []
@@ -64,6 +87,21 @@ def dashboard(request):
     
 
 def board(request,board_id):
+    """Page that shows sticky notes and allows users to edit 
+    them. Has the following POST scenarios:
+
+    ajax
+        When the save button is pressed, an ajax function is
+        triggered which fetches all the data from the sticky
+        notes and sends it
+    new_note
+        Creates a new note when a submit button is pressed
+    delete_note.x
+        When an image button is pressed on a sticky note,
+        deletes that note, has an id attached 
+    
+    """
+
     # Check authentication
     if not authenticate(request):
         return redirect("login")
