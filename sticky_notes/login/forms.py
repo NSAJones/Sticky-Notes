@@ -42,8 +42,12 @@ class CreateUser(forms.Form):
 
 class Login(forms.Form):
     """Form for logging in"""
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={"placeholder":"username"}
+    ))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={"placeholder":"password"}
+    ))
 
     def clean(self) -> dict[str, Any]:
         """Check form is valid"""

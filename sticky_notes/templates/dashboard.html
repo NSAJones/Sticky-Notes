@@ -1,33 +1,62 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block imports %}
+<script src="{% static 'js/confirm_delete.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-    <form action='' method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="create Board" name="create">
-    </form>
+    <div class="content-left">
+        <div class="header-links no-padding">
+            
 
-    <h2>Owned boards</h2>
-    <div id="owned">
-        {% for board in owned %}
-            <a id='{{board.id}}' href='{% url "board" board_id=board.id %}'>
-                {{ board.name }}
-            </a>
-            <form action='' method="post">
+            <form class="dark django-form skinny" action="" method="post">
+                <h1 class="dark">{{user}}</h1>
                 {% csrf_token %}
-                <input type="submit" 
-                value="delete board" name="delete_{{board.id}}">
+                <input type="submit" value="delete account"
+                name="user_delete" onclick="return confirmSubmit()">
             </form>
-        {% endfor %}
-    </div>
 
-    <h2>Invited boards</h2>
-    <div id="invited">
-        {% for board in invited %}
-            <a id='{{board.id}}' href='{% url "board"  board_id=board.id %}'>
-                {{ board.name }}
-            </a>
-        {% endfor %}
+            <form class="dark django-form" action='' method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="create Board" name="create">
+            </form>
+        </div>
+
+        <div class="light rounded">
+            <h2>Owned boards</h2>
+            <div id="owned" class="horizontal-list">
+                {% for board in owned %}
+                    
+                    <form class="dark django-form" action='' method="post">
+                        {% csrf_token %}
+
+                        <a id='{{board.id}}' href='{% url "board" board_id=board.id %}'>
+                            {{ board.name }}
+                        </a>
+
+                        <input type="submit" 
+                        value="delete board" name="delete_board">
+
+                        <input hidden name="id" value="{{board.id}}">
+                    </form>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="light rounded">
+            <h2>Invited boards</h2>
+            <div id="invited">
+                {% for board in invited %}
+                    <div class="dark django-form">
+                        <a id='{{board.id}}' href='{% url "board"  board_id=board.id %}'>
+                            {{ board.name }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
 {% endblock  %}

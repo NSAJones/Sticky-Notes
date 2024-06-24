@@ -1,0 +1,219 @@
+body {
+    margin: 0;
+    box-sizing: border-box;
+    
+    --light1: #F2F2F2;
+    --light2: #F2EB80;
+    --mid: #F2CE1B;
+    --dark1: #D9A404;
+    --dark2: #A66C24;
+
+    --padding: 0.5em;
+    --border-radius:0.25em;
+    background-color: var(--light1)
+}
+
+body *{
+    box-sizing: border-box;
+    padding: var(--padding);
+    background-color: inherit;
+    color: var(--dark2);
+
+    border-width: 0;
+
+    font-family: "Playwrite US Modern", cursive;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+    transition: all 0.5s ease-in-out;
+}
+
+
+a,h1,h2,h3,p,label,.no-padding {
+    padding: 0;
+    margin: 0;
+}
+
+
+
+.medium, .medium *{
+    background-color: var(--mid);
+    color: var(--dark2);
+}
+
+.light{
+    background-color: var(--light2);
+    color: var(--dark2);
+}
+
+.dark, .dark *{
+    background-color: var(--dark1);
+    color: var(--light2);
+}
+
+footer,header{
+    display: flex;
+    min-height: 5em;
+}
+
+footer{
+    justify-content: center;
+    align-items: center;
+}
+
+.content-center{
+    min-height: calc(100vh - 5em);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.content-left{
+    min-height: calc(100vh - 5em);
+    width:100%;
+    display: flex;
+    justify-content:left;
+    align-items:start;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.header-links{
+    display: flex;
+    justify-content:center;
+    align-items: stretch;
+    flex-flow: wrap;
+    gap: 0.5em;
+
+}
+
+.header-links *{
+    padding: var(--padding);
+}
+
+.horizontal-list{
+    background-color: var(--light2);
+    display: flex;
+    justify-content:left;
+    align-items:start;
+    flex-direction: column;
+    gap: 1em;
+    min-width: 20em;
+    min-height: 20em;
+}
+
+.horizontal-list h2{
+    background-color: var(--light2);
+}
+
+.notes-container{
+    width:100%;
+    display: flex;
+    justify-content:left;
+    align-items:start;
+    flex-direction: column;
+    flex-flow: wrap;
+    gap: 1em;
+
+}
+
+.django-form{
+    border-radius: var(--border-radius);
+    max-width: 40em;
+    margin: 0;
+}
+
+.django-form input,.django-form button{
+    border-radius: var(--border-radius);
+    background-color: var(--mid);
+    color: var(--dark2)
+}
+
+.django-form input::placeholder{
+    color: var(--dark1);
+}
+
+.django-form input:hover, .django-form button:hover, .django-form input:focus{
+    background-color: var(--light2);
+    border: 0;
+    outline: 0;
+}
+
+.django-form div{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: wrap;
+    gap: 0.75em;
+}
+
+.sticky-note{
+    border-radius:0 3em 0 0 ;
+    min-height: 15em;
+    width: 15em;
+    overflow: hidden;
+    box-shadow: 0 0.5em 0.5em 0.1em #a66c24a4;
+}
+
+.sticky-note form{
+    margin:0;
+    padding: 0;
+}
+
+.sticky-note input:hover{
+    background-color: var(--light2);
+}
+
+.image-button{
+    width: 3em;
+    height: 3em;
+    border-radius: 0 0 1em 0;
+}
+
+
+
+textarea{
+    resize: none;
+    width: 100%;
+    height: calc(15em);
+}
+
+textarea:hover{
+    background-color: var(--light2);
+}
+
+textarea:focus{
+    outline: none;
+}
+
+.skinny{
+    max-width: fit-content;
+    width: auto;
+    min-width: 0;
+}
+
+.rounded{
+    border-radius: var(--border-radius);
+}
+
+@keyframes error-glow{
+    0% {background-color: var(--dark1);}
+    50% {background-color: var(--mid);}
+    100% {background-color: var(--dark1);}
+}
+
+.errorlist{
+    list-style-type: none;
+    margin: 0;
+    animation-name: error-glow;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+    border-radius: var(--border-radius);
+}
+
+.errorlist li{
+    background-color: transparent;
+}
+

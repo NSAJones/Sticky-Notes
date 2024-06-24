@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<p>
+This site allows you to create sticky note boards. Why not
+<a href="{% url 'register' %}">make an account</a>
+ or <a href="{% url 'login' %}">login</a>?
+</p>
+{% endblock %}

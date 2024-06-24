@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block imports %}
+<script src="{% static 'js/get_notes.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="content-left">
+        <a href="{% url 'board' board_id=board_id %}">go back to board</a>
+        <form class="django-form dark" action='' method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="invite user" name="invite">
+        </form>
+        
+        <div class=" light rounded horizontal-list">
+        {% for invite in invites %}
+            <div class="no-padding light">
+                
+                <form class="dark django-form skinny" action='' method="post">
+                    {{invite.username.username}} 
+                    {% csrf_token %}
+                    <input type="submit" 
+                    value="delete invite" name="delete">
+
+                    <input hidden name="id" value="{{invite.id}}">
+                </form>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+
+
+{% endblock  %}

@@ -1,12 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block imports %}
+<script src="{% static 'js/get_notes.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-    <form action='' method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="create Board" name="create">
-    </form>
+    <div class="content-left light">
+        <a href="{% url 'invite' board_id=board_id %}"> go to invites</a>
+        <form class="skinny dark django-form " onsubmit="get_notes()" on method="post">
+            {% csrf_token %}
+            <input type="submit" value="create new note" name="new_note">
+            <input type="submit" value="save" name="save">
+            
+        </form>
 
+        <div id="notes" class="notes-container light horizontal-list">
+            
+            {% for note in notes%}
+            <scan class="medium sticky-note no-padding">
+                <form action='' method="post">
+                    {% csrf_token %}
+                    <input class="image-button" type="image" src="{% static 'xmark-solid.svg' %}"
+                    alt="Submit" value="delete" name="delete_note">
+                    <input hidden name="id" value="{{note.id}}">
+                </form>
+                <textarea id="note_{{note.id}}"> {{note.text}} </textarea>
+            </scan>
+            {% endfor %}
+        </div>
+    </div>
    
 
 {% endblock  %}

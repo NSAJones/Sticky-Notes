@@ -30,6 +30,7 @@ def login(request):
         form = Login()
         
     context = {"form":form}
+    context["logged_in"] = authenticate(request)
     return render(request, "login.html",context)
 
 def register(request):
@@ -56,11 +57,14 @@ def register(request):
         form = CreateUser()
         
     context = {"form":form}
+    context["logged_in"] = authenticate(request)
     return render(request, "register.html",context)
 
 def index(request):
     context = {"logged_in":authenticate(request)}
-    return render(request,"index.html")
+
+   
+    return render(request,"index.html",context)
 
 def authenticate(request):
     """Checks session_id against database"""
