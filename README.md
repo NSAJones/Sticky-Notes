@@ -8,4 +8,5 @@ Download required modules from `requirements.txt` using pip and then launch the 
 > runserver.bat
 ```
 
+
 Application design is also included in the base directory.

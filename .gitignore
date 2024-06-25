@@ -2,5 +2,3 @@
 02-029 Django Project Setup .pdf
 venv
 *__pycache__
-*migrations
-*db.sqlite3
