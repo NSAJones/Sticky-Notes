@@ -1,3 +1,8 @@
+"""
+This file has Django forms for creating boards and inviting users to a
+board. Only InviteUser has a custom clean function
+"""
+
 from typing import Any
 from django import forms
 from django.core.exceptions import ValidationError
@@ -10,7 +15,8 @@ class CreateBoard(forms.Form):
 
     name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "new board name", "required": "required"}
+            attrs={"placeholder": "new board name",
+                    "required": "required"}
         )
     )
 
@@ -35,14 +41,18 @@ class InviteUser(forms.Form):
         cd = self.cleaned_data
 
         # Check username exists
-        if not Login.objects.filter(username=cd.get("username")).exists():
+        if not Login.objects.filter(
+            username=cd.get("username")).exists():
+
             raise ValidationError("Username does not exist")
 
         username_row = Login.objects.get(username=cd.get("username"))
         board_row = Board.objects.get(id=self.board_id)
 
         # Check user isn't invited already
-        if Invite.objects.filter(username=username_row, board=board_row).exists():
+        if Invite.objects.filter(username=username_row,
+                                 board=board_row).exists():
+            
             raise ValidationError("User already invited")
 
         return super().clean()

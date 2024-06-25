@@ -7,6 +7,4 @@ Download required modules from `requirements.txt` using pip and then launch the 
 > pip install -r requirements.txt
 > runserver.bat
 ```
-
-
 Application design is also included in the base directory.

@@ -1,3 +1,10 @@
+"""
+This file has views for the dashboard, board and invite pages, all of
+these pages require login authentication via the authenticate function
+from 'login.views'. Both the board and invite pages have a parameter in
+their url which is for the board id.
+"""
+
 from django.shortcuts import render, HttpResponse, redirect
 from login.views import authenticate, get_user
 from login.models import Login
@@ -58,7 +65,8 @@ def dashboard(request):
         # Log user out
         elif request.POST.get("log_out"):
             # Make session_id blank in models
-            Login.objects.filter(username=user.username).update(session_id=None)
+            Login.objects.filter(
+                username=user.username).update(session_id=None)
 
             # Delete session_id cookie
             response = redirect("login")
@@ -78,7 +86,11 @@ def dashboard(request):
 
     form = CreateBoard()
 
-    context = {"form": form, "owned": owned, "invited": invited, "user": user.username}
+    context = {"form": form,
+               "owned": owned,
+               "invited": invited,
+               "user": user.username}
+    
     context["logged_in"] = authenticate(request)
     return render(request, "dashboard.html", context)
 

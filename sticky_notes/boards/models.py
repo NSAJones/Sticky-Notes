@@ -1,3 +1,8 @@
+"""
+This file includes models for creating Boards, adding sticky notes to
+those boards and inviting other users to those boards
+"""
+
 from django.db import models
 from login.models import Login
 

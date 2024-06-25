@@ -29,7 +29,8 @@ class CreateUser(forms.Form):
 
         # Check confirmation password is equal to normal password
         if pswrd != conf_pswrd:
-            raise ValidationError("Password and confirmation password not equal")
+            raise ValidationError(
+                "Password and confirmation password not equal")
 
         # Check username isn't taken already
         exists = login_table.objects.filter(username=usr).exists()
@@ -57,8 +58,10 @@ class Login(forms.Form):
         pswrd = cd.get("password")
 
         # Check user exists
-
-        exists = login_table.objects.filter(username=usr, password=pswrd).exists()
+        exists = login_table.objects.filter(
+            username=usr, password=pswrd).exists()
+        
+        # If user doesnt exist raise error
         if not exists:
             raise ValidationError("Invalid credentials")
 

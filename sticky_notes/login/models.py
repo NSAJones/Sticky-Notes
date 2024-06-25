@@ -1,3 +1,8 @@
+"""
+This is a short file with only the model used for logging in and
+tracking session ids
+"""
+
 from django.db import models
 
 

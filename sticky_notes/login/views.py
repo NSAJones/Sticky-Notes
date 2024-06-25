@@ -1,3 +1,9 @@
+"""
+This file contains view functions for the login, register and index
+pages, subsequent functions after that are for user authentication,
+which is used in the boards application.
+"""
+
 from django.shortcuts import render, redirect
 from .forms import CreateUser, Login
 from .models import Login as login_table
