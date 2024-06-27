@@ -29,7 +29,6 @@ class InviteUser(forms.Form):
             attrs={"placeholder": "username", "required": "required"}
         )
     )
-
     def __init__(self, *args, **kwargs):
         self.board_id = kwargs.pop("board_id")
         super(InviteUser, self).__init__(*args, **kwargs)
