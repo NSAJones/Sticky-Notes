@@ -1,12 +1,11 @@
-"""This file tests the login forms, as there is only one model in this
-app, the model is not tested here, however it is used in the boards
-app tests"""
+"""This file tests the login forms and views. As there is only one model 
+in this app, the model is not tested here, however it is used in the 
+boards app tests"""
 
 from django.test import TestCase
 from django.urls import reverse
 from .models import Login as login_table
 from .forms import CreateUser,Login
-from http import HTTPStatus
 
 class LoginFormTest(TestCase):
     """This class tests login forms"""
@@ -60,6 +59,21 @@ class LoginFormTest(TestCase):
                 }
         form = Login(data=data).is_valid()
         self.assertFalse(form)
+
+class LoginViewTest(TestCase):
+    """Tests login views are working correctly"""
+
+    def test_register_view(self) -> None:
+        """test register view"""
+        response = self.client.get(reverse("register"))
+        self.assertContains(response,"confirm password",status_code=200)
+
+    def test_login_view(self) -> None:
+        """test login view"""
+        response = self.client.get(reverse("login"))
+        self.assertContains(response,"No account? Why not",status_code=200)
+
+
 
 
 
